@@ -49,4 +49,7 @@ prompt
 # examples (not part of production build)
 examples-backup/
 
+# skills (not part of production build)
+skills/
+
 server.log
