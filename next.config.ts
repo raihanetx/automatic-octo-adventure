@@ -27,9 +27,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true, // We run lint separately
   },
 
-  // SWC minification (default in Next.js 13+)
-  swcMinify: true,
-
   // Experimental features
   experimental: {
     optimizePackageImports: ['lucide-react', 'react-markdown'], // Tree-shake unused imports

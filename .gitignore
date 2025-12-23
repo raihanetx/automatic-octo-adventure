@@ -46,4 +46,7 @@ dev.log
 test
 prompt
 
+# examples (not part of production build)
+examples-backup/
+
 server.log
