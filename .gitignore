@@ -52,4 +52,7 @@ examples-backup/
 # skills (not part of production build)
 skills/
 
+# frontend-design-disabled (not part of production build)
+/frontend-design-disabled/
+
 server.log
