@@ -37,6 +37,24 @@ export async function GET(request: NextRequest) {
       orderBy: {
         createdAt: 'desc',
       },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        excerpt: true,
+        coverImage: true,
+        published: true,
+        createdAt: true,
+        updatedAt: true,
+        authorId: true,
+        author: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
     });
 
     const response = NextResponse.json(articles);
