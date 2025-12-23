@@ -9,24 +9,32 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Admin {
+  id        String     @id @default(cuid())
+  username  String     @unique
+  password  String     // Hashed password
+  articles  Article[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
-model Post {
+model Article {
   id        String   @id @default(cuid())
   title     String
-  content   String?
+  slug      String   @unique
+  content   String   // Markdown content
+  excerpt   String?  // Short description for list view
+  coverImage String? // URL to cover image
   published Boolean  @default(false)
   authorId  String
+  author    Admin    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([published])
+  @@index([slug])
 }

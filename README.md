@@ -1,141 +1,251 @@
-# 🚀 Welcome to Z.ai Code Scaffold
+# ArticleHub - Production Ready
 
-A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with [Z.ai](https://chat.z.ai)'s AI-powered coding assistance.
+A modern, production-ready article website built with Next.js 15, TypeScript, Neon PostgreSQL, and optimized for Vercel deployment.
 
-## ✨ Technology Stack
+## 🚀 Features
 
-This scaffold provides a robust foundation built with:
+- **Modern Tech Stack**: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui
+- **Database**: Neon PostgreSQL with Prisma ORM
+- **Authentication**: JWT-based secure admin authentication
+- **Production Optimized**: Caching, rate limiting, security headers
+- **Vercel Ready**: Optimized for serverless deployment
+- **Responsive Design**: Mobile-first with shadcn/ui components
+- **Markdown Support**: Write articles in Markdown format
 
-### 🎯 Core Framework
-- **⚡ Next.js 15** - The React framework for production with App Router
-- **📘 TypeScript 5** - Type-safe JavaScript for better developer experience
-- **🎨 Tailwind CSS 4** - Utility-first CSS framework for rapid UI development
+## 📋 Prerequisites
 
-### 🧩 UI Components & Styling
-- **🧩 shadcn/ui** - High-quality, accessible components built on Radix UI
-- **🎯 Lucide React** - Beautiful & consistent icon library
-- **🌈 Framer Motion** - Production-ready motion library for React
-- **🎨 Next Themes** - Perfect dark mode in 2 lines of code
+- Node.js 18+ or Bun
+- Neon PostgreSQL database
+- Vercel account (for deployment)
 
-### 📋 Forms & Validation
-- **🎣 React Hook Form** - Performant forms with easy validation
-- **✅ Zod** - TypeScript-first schema validation
+## 🔧 Environment Variables
 
-### 🔄 State Management & Data Fetching
-- **🐻 Zustand** - Simple, scalable state management
-- **🔄 TanStack Query** - Powerful data synchronization for React
-- **🌐 Fetch** - Promise-based HTTP request
+Copy `.env.example` to `.env` and configure:
 
-### 🗄️ Database & Backend
-- **🗄️ Prisma** - Next-generation TypeScript ORM
-- **🔐 NextAuth.js** - Complete open-source authentication solution
+```bash
+DATABASE_URL="postgresql://user:password@ep-xxx.neon.tech/neondb?sslmode=require"
+JWT_SECRET="your-secure-random-secret-key"
+```
 
-### 🎨 Advanced UI Features
-- **📊 TanStack Table** - Headless UI for building tables and datagrids
-- **🖱️ DND Kit** - Modern drag and drop toolkit for React
-- **📊 Recharts** - Redefined chart library built with React and D3
-- **🖼️ Sharp** - High performance image processing
+**Generate JWT_SECRET securely:**
+```bash
+openssl rand -base64 64
+```
 
-### 🌍 Internationalization & Utilities
-- **🌍 Next Intl** - Internationalization library for Next.js
-- **📅 Date-fns** - Modern JavaScript date utility library
-- **🪝 ReactUse** - Collection of essential React hooks for modern development
-
-## 🎯 Why This Scaffold?
-
-- **🏎️ Fast Development** - Pre-configured tooling and best practices
-- **🎨 Beautiful UI** - Complete shadcn/ui component library with advanced interactions
-- **🔒 Type Safety** - Full TypeScript configuration with Zod validation
-- **📱 Responsive** - Mobile-first design principles with smooth animations
-- **🗄️ Database Ready** - Prisma ORM configured for rapid backend development
-- **🔐 Auth Included** - NextAuth.js for secure authentication flows
-- **📊 Data Visualization** - Charts, tables, and drag-and-drop functionality
-- **🌍 i18n Ready** - Multi-language support with Next Intl
-- **🚀 Production Ready** - Optimized build and deployment settings
-- **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
-
-## 🚀 Quick Start
+## 🏗️ Development Setup
 
 ```bash
 # Install dependencies
 bun install
 
+# Setup database
+bun run db:push
+
+# Seed initial data (optional)
+bun run prisma/seed.ts
+
 # Start development server
 bun run dev
-
-# Build for production
-bun run build
-
-# Start production server
-bun start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your application running.
+Visit http://localhost:3000
 
-## 🤖 Powered by Z.ai
+**Default Admin Credentials:**
+- Username: `admin`
+- Password: `admin123`
 
-This scaffold is optimized for use with [Z.ai](https://chat.z.ai) - your AI assistant for:
+⚠️ **Change these credentials in production!**
 
-- **💻 Code Generation** - Generate components, pages, and features instantly
-- **🎨 UI Development** - Create beautiful interfaces with AI assistance  
-- **🔧 Bug Fixing** - Identify and resolve issues with intelligent suggestions
-- **📝 Documentation** - Auto-generate comprehensive documentation
-- **🚀 Optimization** - Performance improvements and best practices
+## 🚀 Vercel Deployment
 
-Ready to build something amazing? Start chatting with Z.ai at [chat.z.ai](https://chat.z.ai) and experience the future of AI-powered development!
+### 1. Prepare for Deployment
+
+1. **Push to GitHub**:
+```bash
+git add .
+git commit -m "Ready for production"
+git push
+```
+
+2. **Configure Vercel**:
+
+   a. Go to [vercel.com](https://vercel.com) and import your repository
+   b. Configure Environment Variables:
+      - `DATABASE_URL`: Your Neon connection string
+      - `JWT_SECRET`: Your generated secret (generate with `openssl rand -base64 64`)
+   c. Click Deploy
+
+### 2. Vercel-Specific Optimizations
+
+This project includes several Vercel-specific optimizations:
+
+- **Middleware**: Security headers, CORS, cache control
+- **API Caching**: Cache headers for static content
+- **Rate Limiting**: Prevents abuse of login endpoint
+- **Singleton Prisma**: Connection pooling for serverless
+- **Optimized Builds**: Prisma generate before build
+
+### 3. Post-Deployment Steps
+
+1. **Seed Production Database**:
+   - Access Vercel project logs
+   - Run: `bun run prisma/seed.ts`
+   - **Or** create admin via Vercel CLI/SSH
+
+2. **Test Critical Flows**:
+   - ✅ Homepage loads
+   - ✅ Articles display
+   - ✅ Admin login works
+   - ✅ Article creation works
+   - ✅ Article deletion works
+
+## 🔒 Security Features
+
+- **JWT Authentication**: Secure, stateless authentication
+- **HTTP-Only Cookies**: Prevents XSS attacks
+- **Rate Limiting**: 5 login attempts per minute
+- **Security Headers**: HSTS, CSP, XSS Protection
+- **Password Hashing**: bcrypt with 12 rounds
+- **Environment Variables**: Secrets stored securely
+
+## 📊 Performance Optimizations
+
+### Caching Strategy
+- Public articles: 60s cache (browser), 120s (CDN)
+- Authenticated requests: 5s cache
+- Static assets: 1 year cache, immutable
+- Stale content: 30s revalidation
+
+### Serverless Optimizations
+- Prisma singleton pattern
+- Connection pooling ready (Neon provides pooler)
+- Edge runtime compatible routes
+- Minimal cold starts
+
+### Build Optimizations
+- Tree shaking enabled
+- Dynamic imports where needed
+- Image optimization ready
+- Font optimization
 
 ## 📁 Project Structure
 
 ```
-src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable React components
-│   └── ui/             # shadcn/ui components
-├── hooks/              # Custom React hooks
-└── lib/                # Utility functions and configurations
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── api/               # API routes
+│   │   │   ├── admin/         # Admin endpoints
+│   │   │   └── articles/      # Article endpoints
+│   │   ├── admin/             # Admin dashboard pages
+│   │   ├── articles/          # Article pages
+│   │   └── page.tsx           # Homepage
+│   ├── components/ui/          # shadcn/ui components
+│   ├── hooks/                 # Custom React hooks
+│   ├── lib/                   # Utilities
+│   │   ├── auth.ts           # Authentication
+│   │   ├── db.ts             # Database
+│   │   ├── api-error.ts      # Error handling
+│   │   └── rate-limit.ts     # Rate limiting
+│   └── middleware.ts          # Security middleware
+├── prisma/
+│   ├── schema.prisma           # Database schema
+│   └── seed.ts               # Seed script
+├── public/                     # Static assets
+└── vercel.json                # Vercel configuration
 ```
 
-## 🎨 Available Features & Components
+## 🛠️ Maintenance
 
-This scaffold includes a comprehensive set of modern web development tools:
+### Database Migrations
 
-### 🧩 UI Components (shadcn/ui)
-- **Layout**: Card, Separator, Aspect Ratio, Resizable Panels
-- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch
-- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
-- **Navigation**: Breadcrumb, Menubar, Navigation Menu, Pagination
-- **Overlay**: Dialog, Sheet, Popover, Tooltip, Hover Card
-- **Data Display**: Badge, Avatar, Calendar
+```bash
+# Create migration
+bun prisma migrate dev --name migration_name
 
-### 📊 Advanced Data Features
-- **Tables**: Powerful data tables with sorting, filtering, pagination (TanStack Table)
-- **Charts**: Beautiful visualizations with Recharts
-- **Forms**: Type-safe forms with React Hook Form + Zod validation
+# Apply to production
+bun prisma migrate deploy
+```
 
-### 🎨 Interactive Features
-- **Animations**: Smooth micro-interactions with Framer Motion
-- **Drag & Drop**: Modern drag-and-drop functionality with DND Kit
-- **Theme Switching**: Built-in dark/light mode support
+### Reset Database (⚠️ Development Only)
 
-### 🔐 Backend Integration
-- **Authentication**: Ready-to-use auth flows with NextAuth.js
-- **Database**: Type-safe database operations with Prisma
-- **API Client**: HTTP requests with Fetch + TanStack Query
-- **State Management**: Simple and scalable with Zustand
+```bash
+bun prisma migrate reset
+bun run prisma/seed.ts
+```
 
-### 🌍 Production Features
-- **Internationalization**: Multi-language support with Next Intl
-- **Image Optimization**: Automatic image processing with Sharp
-- **Type Safety**: End-to-end TypeScript with Zod validation
-- **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
+## 🐛 Troubleshooting
 
-## 🤝 Get Started with Z.ai
+### Vercel Deployment Issues
 
-1. **Clone this scaffold** to jumpstart your project
-2. **Visit [chat.z.ai](https://chat.z.ai)** to access your AI coding assistant
-3. **Start building** with intelligent code generation and assistance
-4. **Deploy with confidence** using the production-ready setup
+**Build Fails:**
+```bash
+# Check environment variables are set in Vercel dashboard
+# Verify DATABASE_URL is correct
+```
 
----
+**Database Connection Issues:**
+```bash
+# Neon provides pooled connection for serverless
+# Ensure ?sslmode=require&channel_binding=require is in URL
+```
 
-Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀
+**Authentication Issues:**
+```bash
+# Verify JWT_SECRET matches between local and Vercel
+# Check cookie domain settings
+```
+
+### Performance Issues
+
+**Slow API Responses:**
+- Check Vercel Edge logs
+- Enable Prisma query logging temporarily
+- Consider adding Redis for production rate limiting
+
+## 📈 Monitoring (Recommended)
+
+### Add Vercel Analytics
+
+1. Install `@vercel/analytics`
+2. Add to `layout.tsx`:
+```tsx
+import { Analytics } from '@vercel/analytics/react'
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  )
+}
+```
+
+### Log Management
+
+- Vercel provides built-in logging
+- Check dashboard for errors
+- Set up alerts for critical failures
+
+## 📄 License
+
+This project is production-ready and optimized for Vercel deployment.
+
+## 🤝 Contributing
+
+For production deployment:
+1. Test thoroughly in development
+2. Update environment variables
+3. Deploy to Vercel Preview first
+4. Test on Preview environment
+5. Deploy to Production
+6. Verify all critical paths
+
+## 🆘 Support
+
+For issues related to:
+- **Database**: Neon documentation
+- **Hosting**: Vercel documentation
+- **Framework**: Next.js documentation

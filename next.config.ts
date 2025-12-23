@@ -2,13 +2,37 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  /* config options here */
-  typescript: {
-    ignoreBuildErrors: true,
+
+  // Production optimizations
+  compress: true, // Enable gzip compression
+  poweredByHeader: false, // Remove X-Powered-By header for security
+
+  // Image optimization
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', // Allow all external images for article covers
+      },
+    ],
+    formats: ['image/avif', 'image/webp'], // Prefer modern formats
   },
-  reactStrictMode: false,
+
+  // Build optimizations
+  typescript: {
+    ignoreBuildErrors: false, // Set to false for production to catch errors
+  },
+  reactStrictMode: true, // Enable for better performance and debugging
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // We run lint separately
+  },
+
+  // SWC minification (default in Next.js 13+)
+  swcMinify: true,
+
+  // Experimental features
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'react-markdown'], // Tree-shake unused imports
   },
 };
 
